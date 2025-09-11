@@ -1,2 +1,3 @@
 Datasets/** filter=lfs diff=lfs merge=lfs -text
 Comparison[[:space:]]Implementations/** filter=lfs diff=lfs merge=lfs -text
+SpectraMorph_Implementation_Jupyter_Notebooks/** filter=lfs diff=lfs merge=lfs -text
