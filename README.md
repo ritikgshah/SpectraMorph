@@ -1,4 +1,4 @@
-# SPECTRAMORPH: STRUCTURED LATENT LEARNING FOR SELF-SUPERVISED HYPERSPECTRAL SUPER-RESOLUTION
+# SpectraMorph: Structured Latent Learning for Self-Supervised Hyperspectral Super-Resolution
 
 **Authors:** Ritik Shah ([rgshah@umass.edu](mailto:rgshah@umass.edu)), Marco Duarte ([mduarte@ecs.umass.edu](mailto:mduarte@ecs.umass.edu))
 
@@ -134,9 +134,10 @@ If you use this repository or build upon our work, please cite the following pap
 
 ## 📜 License
 
-This repository is licensed under the **Apache2.0 License**.
+This repository is licensed under the **Apache-2.0 License**.
 
 You are free to use, modify, and distribute this code with proper attribution.
 
 For full details, see the [LICENSE](./LICENSE) file in the repository.
+
 
