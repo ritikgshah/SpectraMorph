@@ -1,14 +1,14 @@
-# SpectraLift: Physics-Guided Spectral-Inversion Network for Hyperspectral Image Super-Resolution
+# SPECTRAMORPH: STRUCTURED LATENT LEARNING FOR SELF-SUPERVISED HYPERSPECTRAL SUPER-RESOLUTION
 
 **Authors:** Ritik Shah ([rgshah@umass.edu](mailto:rgshah@umass.edu)), Marco Duarte ([mduarte@ecs.umass.edu](mailto:mduarte@ecs.umass.edu))
 
-📄 [Extended Paper on arXiv](https://arxiv.org/pdf/2507.13339)
+📄 [Extended Paper on arXiv]()
 
 ---
 
 ## 🔍 Overview
 
-Welcome to the official implementation of **SpectraLift**. This repository accompanies our research paper and includes code, notebooks, datasets, precomputed results, and environment files for experimentation and analysis.
+Welcome to the official implementation of **SpectraMorph**. This repository accompanies our research paper and includes code, notebooks, datasets, precomputed results, and environment files for experimentation and analysis.
 
 ---
 
@@ -37,9 +37,6 @@ Welcome to the official implementation of **SpectraLift**. This repository accom
 - Each subfolder contains:
   - CSVs with image quality metrics across various experimental configurations (e.g., different PSFs, downsampling ratios, and MSI band counts).
   - An Excel summary: `All SOTA methods comparison.xlsx` aggregates all individual method metrics and comparison tables
-    - Includes the sheet `'Individual metrics analysis'`, which:
-      - Shows how often each method achieves the best metric per dataset.
-      - Summarizes performance trends and strengths of different methods.
 
 ---
 
@@ -52,21 +49,20 @@ Benchmarks against state-of-the-art supervised and unsupervised baselines.
   - Applied to both synthetic datasets and the University of Houston dataset.
 
 - **Unsupervised**  
-  - Pre-executed Jupyter notebooks for: `MIAE`, `C2FF`, `SSSR`, `SDP`
+  - Pre-executed Jupyter notebooks for: `MIAE`, `C2FF`, `SSSR`, `SDP`, `SpectraLift`
   - Applied to both synthetic datasets and the University of Houston dataset.
 
 ---
 
-### 🔸 SpectraLift Implementation
-  > Note: The Spectral Inversion Network (SIN) mentioned in the paper is called SpectralSR_MLP in the code on this repository. 
+### 🔸 SpectraMorph Implementation
 
-- **SpectraLift Implementation** (`Spectralift_Implementation_Jupyter_Notebooks`):  
-  Pre-executed notebooks demonstrating SpectraLift on both synthetic and University of Houston datasets.
+- **SpectraMorph Implementation** (`SpectraMorph_Implementation_Jupyter_Notebooks`):  
+  Pre-executed notebooks demonstrating SpectraMorph on both synthetic and University of Houston datasets.
 
-- **Ablation Study** (`Spectralift_Ablation_Study_Jupyter_Notebooks`):  
+- **Ablation Study** (`SpectraMorph_Ablation_Study_Jupyter_Notebooks`):  
   Pre-executed notebooks evaluating contributions of different model components and architectural choices.
 
-- **Python Scripts** (`SpectraLift_python`):  
+- **Python Scripts** (`SpectraMorph_python`):  
   Full Python-based implementation for use in IDEs or via command line.  
   Detailed instructions available in [Python Implementation Details](py_implementation.md).
 
@@ -88,10 +84,10 @@ pip install -r requirements.txt
 ```
 ### Using Conda:
 ```bash
-conda env create -f spectralift-env.yaml
-conda activate spectralift-env
+conda env create -f spectramorph-env.yaml
+conda activate spectramorph-env
 ```
-In rare cases, the Conda YAML file may fail to recreate the environment correctly. If so, use requirements.txt.
+In rare cases, the Conda YAML file may fail to recreate the environment correctly. If so, use requirements.txt. In the case where both the yaml as well as requirements.txt fail to create the environment using the commands given above, please follow the instructions in the [Manual Environment Setup Guide](ENVIRONMENT_SETUP.md) to be able to create a conda environment with every dependency you need to execute any file within this repository.
 
 ## 🗂️ Datasets
 
@@ -134,21 +130,13 @@ Direct pushes are disabled. Thanks for respecting this workflow!
 If you use this repository or build upon our work, please cite the following paper:
 
 ```bibtex
-@misc{spectralift,
-  title={SpectraLift: Physics-Guided Spectral-Inversion Network for Self-Supervised Hyperspectral Image Super-Resolution},
-  author={Ritik Shah and Marco F. Duarte},
-  year={2025},
-  eprint={2507.13339},
-  archivePrefix={arXiv},
-  primaryClass={eess.IV},
-  url={https://arxiv.org/abs/2507.13339}
-}
 ```
 
 ## 📜 License
 
-This repository is licensed under the **MIT License**.
+This repository is licensed under the **Apache2.0 License**.
 
 You are free to use, modify, and distribute this code with proper attribution.
 
 For full details, see the [LICENSE](./LICENSE) file in the repository.
+
