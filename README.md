@@ -55,6 +55,7 @@ Benchmarks against state-of-the-art supervised and unsupervised baselines.
 ---
 
 ### 🔸 SpectraMorph Implementation
+> Note: The Latent Estimation Network (LEN) mentioned in the paper is the MLP part of MSItoHSI_MLP model class in the code on this repository. 
 
 - **SpectraMorph Implementation** (`SpectraMorph_Implementation_Jupyter_Notebooks`):  
   Pre-executed notebooks demonstrating SpectraMorph on both synthetic and University of Houston datasets.
@@ -77,6 +78,7 @@ Benchmarks against state-of-the-art supervised and unsupervised baselines.
 ## ⚙️ Environment Setup
 
 Use either `pip` or `conda` to recreate the project environment:
+> Note: This environment contains all the packages necessary to execute all the jupyter notebooks and python files in this repository, including the comparison methods.
 
 ### Using pip:
 ```bash
@@ -139,5 +141,6 @@ This repository is licensed under the **Apache-2.0 License**.
 You are free to use, modify, and distribute this code with proper attribution.
 
 For full details, see the [LICENSE](./LICENSE) file in the repository.
+
 
 
