@@ -4,3 +4,4 @@ SpectraMorph_Implementation_Jupyter_Notebooks/** filter=lfs diff=lfs merge=lfs -
 Super_Resolved_Images_Comparison_Jupyter_Notebooks/** filter=lfs diff=lfs merge=lfs -text
 SpectraMorph_Ablation_Study_Jupyter_Notebooks/** filter=lfs diff=lfs merge=lfs -text
 SpectraMorph_Oracle_Implementation_Jupyter_Notebooks/*.ipynb filter=lfs diff=lfs merge=lfs -text
+*.ipynb filter=lfs diff=lfs merge=lfs -text
