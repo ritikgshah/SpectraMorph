@@ -2,7 +2,7 @@
 
 **Authors:** Ritik Shah ([rgshah@umass.edu](mailto:rgshah@umass.edu)), Marco Duarte ([mduarte@ecs.umass.edu](mailto:mduarte@ecs.umass.edu))
 
-📄 [Extended version coming shortly...]()
+📄 [Extended version on arXiv](https://arxiv.org/pdf/2510.20814v1)
 
 ---
 
@@ -132,6 +132,15 @@ Direct pushes are disabled. Thanks for respecting this workflow!
 If you use this repository or build upon our work, please cite the following paper:
 
 ```bibtex
+@misc{shah2025spectramorphstructuredlatentlearning,
+      title={SpectraMorph: Structured Latent Learning for Self-Supervised Hyperspectral Super-Resolution}, 
+      author={Ritik Shah and Marco F Duarte},
+      year={2025},
+      eprint={2510.20814},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2510.20814}, 
+}
 ```
 
 ## 📜 License
@@ -141,6 +150,7 @@ This repository is licensed under the **Apache-2.0 License**.
 You are free to use, modify, and distribute this code with proper attribution.
 
 For full details, see the [LICENSE](./LICENSE) file in the repository.
+
 
 
 
