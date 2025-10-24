@@ -132,7 +132,7 @@ Direct pushes are disabled. Thanks for respecting this workflow!
 If you use this repository or build upon our work, please cite the following paper:
 
 ```bibtex
-@misc{shah2025spectramorphstructuredlatentlearning,
+@misc{spectramorph,
       title={SpectraMorph: Structured Latent Learning for Self-Supervised Hyperspectral Super-Resolution}, 
       author={Ritik Shah and Marco F Duarte},
       year={2025},
@@ -150,6 +150,7 @@ This repository is licensed under the **Apache-2.0 License**.
 You are free to use, modify, and distribute this code with proper attribution.
 
 For full details, see the [LICENSE](./LICENSE) file in the repository.
+
 
 
 
