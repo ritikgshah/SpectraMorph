@@ -1,6 +1,6 @@
-# Python Implementation Details for SpectraLift
+# Python Implementation Details for SpectraMorph
 
-This document provides a comprehensive guide for using the Python scripts included in the SpectraLift framework. Whether you're working in an IDE or running experiments from the command line, this guide will help you navigate the available options and choose the best configuration for your use case.
+This document provides a comprehensive guide for using the Python scripts included in the SpectraMorph framework. Whether you're working in an IDE or running experiments from the command line, this guide will help you navigate the available options and choose the best configuration for your use case.
 
 ---
 
@@ -8,13 +8,13 @@ This document provides a comprehensive guide for using the Python scripts includ
 
 | Script / Module       | Purpose                                                                 |
 |------------------------|-------------------------------------------------------------------------|
-| `run.py`              | Interactive script for running SpectraLift within an IDE (e.g., VS Code, PyCharm). Ideal for debugging, experimentation, or educational purposes. |
+| `run.py`              | Interactive script for running SpectraMorph within an IDE (e.g., VS Code, PyCharm). Ideal for debugging, experimentation, or educational purposes. |
 | `main.py`             | Command-line interface for reproducible experiments using a config file. Recommended for batch runs, scripting, and performance tracking. |
-| `spectralift_helpers.py` | Core training loop, inference routines, and MLP model architecture. |
+| `spectramorph_helpers.py` | Core training loop, inference routines, and MLP model architecture. |
 | `generate_synthetic_inputs.py` | Creates synthetic low-resolution HSI and high-resolution MSI inputs using custom or predefined PSFs and SRFs. |
 | `utils.py`            | Utility functions for spectral/spatial degradation, PSF/SRF models, normalization, and noise injection. |
 | `compute_metrics.py`  | Computes evaluation metrics for quantitative benchmarking. |
-| `__init__.py`         | Makes SpectraLift usable as a Python package by exposing key functions for import. |
+| `__init__.py`         | Makes SpectraMorph usable as a Python package by exposing key functions for import. |
 
 ---
 
@@ -26,7 +26,7 @@ If you're working in an IDE like VS Code or PyCharm, use `run.py` for a hands-on
 
 | Parameter | Description |
 |----------|-------------|
-| `synthetic` | If `True`, SpectraLift generates synthetic HR MSI and LR HSI from a raw HSI input. Set to `False` to use real-world data. |
+| `synthetic` | If `True`, SpectraMorph generates synthetic HR MSI and LR HSI from a raw HSI input. Set to `False` to use real-world data. |
 | `provide_psf` | Set to `True` to load a custom PSF from a `.mat` file (`psf_file`). |
 | `provide_srf` | Set to `True` to load a custom SRF from a `.mat` file (`srf_file`). Required if using real-world MSI data with arbitrary band counts. |
 
@@ -70,14 +70,16 @@ If you're working in an IDE like VS Code or PyCharm, use `run.py` for a hands-on
 
 | Parameter | Description |
 |----------|-------------|
-| `lr_schedule` | Learning rate scheduler: `"one_cycle"`, `"cosine_restart"`, or `"flat"`. |
-| `init_lr`, `max_lr`, `final_lr`, `min_lr` | Learning rate parameters. Which ones are used depends on the scheduler. More detailed comments are in the run.py script |
-| `num_restarts` | For cosine annealing with restarts. |
+| `init_lr`, `max_lr`, `final_lr` | Initial, maximum, and final learning rate parameters for the One Cycle LR scheduler. |
 | `epochs` | Total number of training epochs. |
-| `hidden_size` | Number of neurons in each hidden layer of the SpectralSR MLP. |
+| `hidden_size` | Number of neurons in each hidden layer of the Latent Estimation Network. |
 | `training_batch_size` | Number of pixels per batch during training. If `None`, trains on the full image. |
 | `inference_batch_size` | Number of pixels per batch during inference. If `None`, runs full-image inference. |
+| `num_endmembers` | Number of endmembers to be extracted from the LR HSI. |
+| `spec_prior` | Boolean flag indicating use of the Coarse Spectral Prior. If `None`, CSP is not used, else if `True`, CSP is used. |
+| `prior_downsample` | The downsampling ratio for generating the downsampled LR HSI for training with the CSP. |
 | `verbose` | If set to 1, prints shapes of inputs and outputs. Set to 0 for silent mode. |
+| `figure_format` | The file format to save the visualizations of the endmember signatures and Abundance Like Latent Estimates. Options: `jpg` or `png`. |
 | `output_file_type` | Format for saving output: `'numpy'`, `'h5'`, or `'matlab'`. Use `'h5'` for large files. |
 
 ---
@@ -88,11 +90,11 @@ To run experiments via terminal using a config file:
 
 1. Navigate to the project root.
 2. Use a template config from:  
-   `SpectraLift_python/Config_file_templates/`
+   `SpectraMorph_python/Config_file_templates/`
 3. Execute:
 
 ```bash
-python main.py --config SpectraLift_python/Config_file_templates/your_config.yaml
+python main.py --config SpectraMorph_python/Config_file_templates/your_config.yaml
 ```
 
 YAML is recommended over JSON because it supports comments and is easier to read/write. Nonetheless, main.py has support for YAML and JSON config files as well as pure CLI execution.
@@ -101,7 +103,7 @@ YAML is recommended over JSON because it supports comments and is easier to read
 
 ### Inference in Batches = Seamless Results
 
-SpectraLift uses a **spectral-only MLP** (SpectralSR_MLP) that treats each pixel independently and does **not rely on spatial context**.  
+SpectraMorph uses a **spectral-only MLP** (MSItoHSI_MLP) that treats each pixel independently and does **not rely on spatial context**.  
 As a result:
 
 - You can perform inference in **mini-batches** without needing to split the image into spatial tiles.
@@ -113,12 +115,12 @@ As a result:
 
 ### Choosing the Right Training Batch Size
 
-Unlike many HSI super-resolution methods that train on large high-resolution images, SpectraLift trains **directly on the low-resolution HSI domain**. This has two important consequences:
+Unlike many HSI super-resolution methods that train on large high-resolution images, SpectraMorph trains **directly on the low-resolution HSI domain**. This has two important consequences:
 
 #### 1. Small GPUs Can Still Train Large HSIs
 
 - Because the LR HSI is much smaller in size, even full-image training is feasible on modest GPUs (e.g., 4–6 GB VRAM).
-- This makes SpectraLift suitable for laptop or lightweight server environments.
+- This makes SpectraMorph suitable for laptop or lightweight server environments.
 
 #### 2. Very Small Batch Sizes Hurt Performance
 
@@ -131,14 +133,13 @@ Unlike many HSI super-resolution methods that train on large high-resolution ima
 
 ## Learning Rate Schedulers & Optimization Settings
 
-SpectraLift is compatible with a variety of learning rate (LR) schedulers and optimizer settings. While most reasonable LR schedules will lead to convergence, **careful tuning of LR parameters is essential to achieve state-of-the-art performance**.
+SpectraMorph is compatible with a variety of learning rate (LR) schedulers and optimizer settings. While most reasonable LR schedules will lead to convergence, **careful tuning of LR parameters is essential to achieve state-of-the-art performance**.
 
-The following learning rate schedulers are supported:
+The following learning rate schedulers are supported (although the framework can be used with any LR scheduler of your choice, custom implementation will be required from the user's side):
 
 | Scheduler         | Description                                                                 |
 |-------------------|-----------------------------------------------------------------------------|
 | `"one_cycle"`     | Cyclical schedule with warm-up and decay. Good balance between speed and stability. |
-| `"cosine_restart"`| Cosine annealing with periodic restarts. Effective for escaping local minima. |
 | `"flat"`          | Constant learning rate throughout training. Recommended only for ablation or debugging. |
 
 > **Important:** The optimal learning rate schedule and parameters **vary by dataset and experimental setting** (e.g., PSF type, SNR, band count, etc.).
@@ -149,20 +150,26 @@ The following learning rate schedulers are supported:
 
 To see the **exact learning rate schedules and hyperparameters** used in each of the experiments reported in our paper, please refer to:
 
-[`Spectralift_Implementation_Jupyter_Notebooks/`](../Spectralift_Implementation_Jupyter_Notebooks)
+[`SpectraMorph_Implementation_Jupyter_Notebooks`](SpectraMorph_Implementation_Jupyter_Notebooks)
 
 These notebooks contain:
 
 - The specific LR scheduler used per experiment
 - Exact LR values
-- Epoch counts and restart frequencies
+- Epoch counts
 - Complete configuration for reproducibility
+
+---
+
+## Intermediate Latent Structure Visualization File Format
+
+The intermediate structures: Endmember Signatures and Abundance Like Latent Estimates (ALLE) are saved for visualization. SpectraMorph supports two output formats for saving these: `jpg` and `png`. You can control the format using the `figure_format` parameter.
 
 ---
 
 ## Output File Formats
 
-SpectraLift supports three output formats for saving the final high-resolution hyperspectral image:
+SpectraMorph supports three output formats for saving the final high-resolution hyperspectral image:
 
 | Format     | Description                                                                 |
 |------------|-----------------------------------------------------------------------------|
@@ -178,7 +185,8 @@ You can control the format using the `output_file_type` parameter (`'numpy'`, `'
 
 If you have any questions or run into issues:
 
-- Review the [README](../README.md)
+- Review the [README](README.md)
+- Check our pre executed jupyter notebooks that implement the method
 - Open an issue on the GitHub repository
-- Refer to our [paper on arXiv](https://arxiv.org/abs/2507.13339)
+- Refer to our [paper on arXiv](https://arxiv.org/pdf/2510.20814v1)
 - Email the authors if neither of the above options work for you
